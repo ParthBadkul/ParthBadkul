@@ -2,9 +2,11 @@ import requests
 import json
 import math
 import os
+import random
 from datetime import datetime, timedelta
 
 LEETCODE_USERNAME = "zqU0CvVnA1"
+RANDOM_SEED = 42  # fixed seed so SVG is deterministic across runs
 
 def fetch_leetcode_calendar(username):
     url = "https://leetcode.com/graphql"
@@ -33,7 +35,6 @@ def fetch_leetcode_calendar(username):
 def build_grid(calendar):
     today = datetime.now()
     start = today - timedelta(weeks=52)
-    # Align to Monday
     start = start - timedelta(days=start.weekday())
 
     grid = []
@@ -50,6 +51,55 @@ def build_grid(calendar):
         grid.append(week_data)
     return grid
 
+def build_random_path(weeks, days, seed=RANDOM_SEED):
+    """
+    Build a random Hamiltonian-like path through the grid using a
+    randomised DFS. Falls back to serpentine if DFS gets stuck.
+    """
+    rng = random.Random(seed)
+    visited = [[False] * days for _ in range(weeks)]
+    path = []
+
+    def neighbours(col, row):
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        rng.shuffle(dirs)
+        result = []
+        for dc, dr in dirs:
+            nc, nr = col + dc, row + dr
+            if 0 <= nc < weeks and 0 <= nr < days and not visited[nc][nr]:
+                result.append((nc, nr))
+        return result
+
+    def dfs(col, row):
+        visited[col][row] = True
+        path.append((col, row))
+        if len(path) == weeks * days:
+            return True
+        for nc, nr in neighbours(col, row):
+            if dfs(nc, nr):
+                return True
+        # backtrack
+        visited[col][row] = False
+        path.pop()
+        return False
+
+    # Try a few random starting corners
+    starts = [(0, 0), (0, days - 1), (weeks - 1, 0)]
+    rng.shuffle(starts)
+    for sc, sr in starts:
+        if dfs(sc, sr):
+            break
+
+    # Fallback to serpentine if DFS didn't complete (large grids)
+    if len(path) < weeks * days:
+        path.clear()
+        for col in range(weeks):
+            rng_col = range(days) if col % 2 == 0 else range(days - 1, -1, -1)
+            for row in rng_col:
+                path.append((col, row))
+
+    return path
+
 def get_color(count, theme):
     if theme == "dark":
         if count == 0:   return "#1a1a2e"
@@ -63,37 +113,32 @@ def get_color(count, theme):
         else:            return "#ffa116"
 
 def generate_svg(grid, theme):
-    CELL  = 12
-    PAD   = 2
-    STEP  = CELL + PAD
-    MARGIN = 20
-    SNAKE_CELLS = 5
+    CELL       = 12
+    PAD        = 2
+    STEP       = CELL + PAD
+    MARGIN     = 20
+    SNAKE_CELLS = 6
 
     weeks = len(grid)
     days  = 7
     W = weeks * STEP + MARGIN * 2
     H = days  * STEP + MARGIN * 2
 
-    bg     = "#0d1117" if theme == "dark" else "#ffffff"
-    snake  = "#00ff88"
-    head   = "#00ffee"
+    bg    = "#0d1117" if theme == "dark" else "#ffffff"
+    snake = "#00ff88"
+    head  = "#00ffee"
 
-    # --- build serpentine path through cell centres ---
-    pts = []
-    for col in range(weeks):
-        rng = range(days) if col % 2 == 0 else range(days - 1, -1, -1)
-        for row in rng:
-            cx = MARGIN + col * STEP + CELL / 2
-            cy = MARGIN + row * STEP + CELL / 2
-            pts.append((cx, cy))
+    # --- randomised path through cell centres ---
+    cell_path = build_random_path(weeks, days)
+    pts = [
+        (MARGIN + col * STEP + CELL / 2, MARGIN + row * STEP + CELL / 2)
+        for col, row in cell_path
+    ]
 
-    # path length
-    total_len = sum(
-        math.dist(pts[i], pts[i + 1]) for i in range(len(pts) - 1)
-    )
+    total_len = sum(math.dist(pts[i], pts[i + 1]) for i in range(len(pts) - 1))
     snake_len = SNAKE_CELLS * STEP
 
-    path_d = "M " + " L ".join(f"{x},{y}" for x, y in pts)
+    path_d = "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
 
     # --- cell rectangles ---
     cells = ""
@@ -103,7 +148,7 @@ def generate_svg(grid, theme):
             y = MARGIN + row * STEP
             cells += f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="2" fill="{get_color(count, theme)}"/>\n    '
 
-    dur = "10s"
+    dur = "22s"  # slow
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
   <style>

@@ -48,7 +48,7 @@
 
 ### 🎮 `[ SKILL TREE ]`
 
-[![My Skills](https://skillicons.dev/icons?i=flutter,dart,cpp,figma,git,github,firebase,androidstudio,vscode&theme=dark&perline=9)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=spring,java,kafka,react,postgres,flutter,dart,cpp,figma,git,github,firebase,androidstudio,vscode&theme=dark&perline=7)](https://skillicons.dev)
 
 </div>
 
@@ -80,24 +80,17 @@
 
 ```
 ╔══════════════════════════════════╗  ╔══════════════════════════════════╗
-║  📱 ModernLoginPager             ║  ║  🌐 flutterWebsite               ║
+║  🤖 claude-code-pet              ║  ║  🎮 unreal-engine-ai             ║
 ║  ─────────────────────────────  ║  ║  ─────────────────────────────  ║
-║  Slick login UI in Flutter/Dart  ║  ║  Full web app built with Flutter  ║
-║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [DART]  ║  ║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [DART]  ║
+║  AI-powered code companion pet   ║  ║  AI systems inside Unreal Engine ║
+║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [JS]    ║  ║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [C++]   ║
 ╚══════════════════════════════════╝  ╚══════════════════════════════════╝
 
 ╔══════════════════════════════════╗  ╔══════════════════════════════════╗
-║  ✈️  TravellingApp_Ui            ║  ║  💎 Crypto_UI                    ║
+║  🦉 Hoot_backend_with_events     ║  ║  🦉 Hoot-main                    ║
 ║  ─────────────────────────────  ║  ║  ─────────────────────────────  ║
-║  Travel app UI concept in Dart   ║  ║  Crypto dashboard UI in C++      ║
-║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [DART]  ║  ║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [C++]   ║
-╚══════════════════════════════════╝  ╚══════════════════════════════════╝
-
-╔══════════════════════════════════╗  ╔══════════════════════════════════╗
-║  ☕ Coffe_UI                     ║  ║  👗 fash0ff                      ║
-║  ─────────────────────────────  ║  ║  ─────────────────────────────  ║
-║  Coffee shop UI concept in C++   ║  ║  Fashion app project in C++      ║
-║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [C++]   ║  ║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [C++]   ║
+║  Hoot's event-driven backend     ║  ║  Core Hoot application repo      ║
+║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [JAVA]  ║  ║  ▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░  [🔒]    ║
 ╚══════════════════════════════════╝  ╚══════════════════════════════════╝
 ```
 
